@@ -1,0 +1,11 @@
+--- a/kernel/locking/lockdep.c	2023-05-24 18:30:25.000000000 +0200
++++ b/kernel/locking/lockdep.c	2023-06-06 09:12:00.520261802 +0200
+@@ -4861,7 +4861,7 @@
+ 		raw_local_irq_restore(flags);
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(lockdep_init_map_type);
++EXPORT_SYMBOL(lockdep_init_map_type);
+ 
+ struct lock_class_key __lockdep_no_validate__;
+ EXPORT_SYMBOL_GPL(__lockdep_no_validate__);

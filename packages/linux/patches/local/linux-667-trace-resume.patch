@@ -1,0 +1,122 @@
+--- a/drivers/base/power/main.c	2023-06-05 20:30:36.048660360 +0200
++++ b/drivers/base/power/main.c	2023-06-07 18:52:39.195202222 +0200
+@@ -483,7 +483,9 @@
+ 
+ 	pm_dev_dbg(dev, state, info);
+ 	trace_device_pm_callback_start(dev, info, state.event);
++	TRACE_RESUME(4);
+ 	error = cb(dev);
++	TRACE_RESUME(5);
+ 	trace_device_pm_callback_end(dev, error);
+ 	suspend_report_result(dev, cb, error);
+ 
+@@ -606,6 +608,8 @@
+ 	if (!dpm_wait_for_superior(dev, async))
+ 		goto Out;
+ 
++	TRACE_RESUME(1);
++
+ 	skip_resume = dev_pm_skip_resume(dev);
+ 	/*
+ 	 * If the driver callback is skipped below or by the middle layer
+@@ -622,6 +626,8 @@
+ 	else if (dev_pm_skip_suspend(dev))
+ 		pm_runtime_set_active(dev);
+ 
++	TRACE_RESUME(2);
++
+ 	if (dev->pm_domain) {
+ 		info = "noirq power domain ";
+ 		callback = pm_noirq_op(&dev->pm_domain->ops, state);
+@@ -647,12 +653,15 @@
+ 	}
+ 
+ Run:
++	TRACE_RESUME(3);
+ 	error = dpm_run_callback(callback, dev, state, info);
+ 
+ Skip:
++	TRACE_RESUME(6);
+ 	dev->power.is_noirq_suspended = false;
+ 
+ Out:
++	TRACE_RESUME(7);
+ 	complete_all(&dev->power.completion);
+ 	TRACE_RESUME(error);
+ 	return error;
+@@ -902,22 +911,34 @@
+ 
+ 	TRACE_DEVICE(dev);
+ 	TRACE_RESUME(0);
++	TRACE_RESUME(1);
+ 
+ 	if (dev->power.syscore)
+ 		goto Complete;
+ 
++	TRACE_RESUME(2);
+ 	if (dev->power.direct_complete) {
+ 		/* Match the pm_runtime_disable() in __device_suspend(). */
++		TRACE_RESUME(1);
+ 		pm_runtime_enable(dev);
++		TRACE_RESUME(2);
+ 		goto Complete;
+ 	}
+ 
++	TRACE_RESUME(3);
+ 	if (!dpm_wait_for_superior(dev, async))
+ 		goto Complete;
+ 
++	TRACE_RESUME(4);
+ 	dpm_watchdog_set(&wd, dev);
++
++	dev_info(dev, "device_lock() in device_resume()");
++	TRACE_RESUME(5);
++	debug_show_all_locks();
+ 	device_lock(dev);
+ 
++	TRACE_RESUME(3);
++
+ 	/*
+ 	 * This is a fib.  But we'll allow new children to be added below
+ 	 * a resumed device, even if the device hasn't been completed yet.
+@@ -957,12 +978,14 @@
+ 	}
+ 
+  Driver:
++	TRACE_RESUME(4);
+ 	if (!callback && dev->driver && dev->driver->pm) {
+ 		info = "driver ";
+ 		callback = pm_op(dev->driver->pm, state);
+ 	}
+ 
+  End:
++	TRACE_RESUME(6);
+ 	error = dpm_run_callback(callback, dev, state, info);
+ 	dev->power.is_suspended = false;
+ 
+@@ -971,6 +994,7 @@
+ 	dpm_watchdog_clear(&wd);
+ 
+  Complete:
++	TRACE_RESUME(7);
+ 	complete_all(&dev->power.completion);
+ 
+ 	TRACE_RESUME(error);
+@@ -1203,7 +1227,7 @@
+ 	int error = 0;
+ 
+ 	TRACE_DEVICE(dev);
+-	TRACE_SUSPEND(0);
++	/* TRACE_SUSPEND(0); */
+ 
+ 	dpm_wait_for_subordinate(dev, async);
+ 
+@@ -1263,7 +1287,7 @@
+ 
+ Complete:
+ 	complete_all(&dev->power.completion);
+-	TRACE_SUSPEND(error);
++	/* TRACE_SUSPEND(error); */
+ 	return error;
+ }
+ 

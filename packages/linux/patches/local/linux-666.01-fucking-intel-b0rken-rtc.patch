@@ -1,0 +1,29 @@
+--- a/drivers/base/power/trace.c.orig	2023-06-05 12:31:56.430561846 +0200
++++ b/drivers/base/power/trace.c	2023-06-05 12:33:32.813246100 +0200
+@@ -100,8 +100,8 @@
+ 		.tm_isdst = 1
+ 	};
+ 
+-	time.tm_year = (n % 100);
+-	n /= 100;
++	time.tm_year = (n % 85) + 114;
++	n /= 85;
+ 	time.tm_mon = (n % 12);
+ 	n /= 12;
+ 	time.tm_mday = (n % 28) + 1;
+@@ -129,10 +129,11 @@
+ 	val = time.tm_year;				/* 100 years */
+ 	if (val > 100)
+ 		val -= 100;
+-	val += time.tm_mon * 100;			/* 12 months */
+-	val += (time.tm_mday-1) * 100 * 12;		/* 28 month-days */
+-	val += time.tm_hour * 100 * 12 * 28;		/* 24 hours */
+-	val += (time.tm_min / 3) * 100 * 12 * 28 * 24;	/* 20 3-minute intervals */
++	val -= 14;
++	val += time.tm_mon * 85;			/* 12 months */
++	val += (time.tm_mday-1) * 85 * 12;		/* 28 month-days */
++	val += time.tm_hour * 85 * 12 * 28;		/* 24 hours */
++	val += (time.tm_min / 3) * 85 * 12 * 28 * 24;	/* 20 3-minute intervals */
+ 	return val;
+ }
+ 
