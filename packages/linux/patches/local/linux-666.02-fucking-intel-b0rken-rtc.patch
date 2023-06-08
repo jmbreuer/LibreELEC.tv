@@ -1,0 +1,20 @@
+--- a/drivers/base/power/trace.c.orig	2023-06-05 13:12:05.664680997 +0200
++++ b/drivers/base/power/trace.c	2023-06-05 13:13:28.794603577 +0200
+@@ -72,7 +72,7 @@
+  *  - 0-996: file + line number
+  *  - 0-1008: device
+  */
+-#define USERHASH (16)
++#define USERHASH (8)
+ #define FILEHASH (997)
+ #define DEVHASH (1009)
+ 
+@@ -85,7 +85,7 @@
+ 
+ static int set_magic_time(unsigned int user, unsigned int file, unsigned int device)
+ {
+-	unsigned int n = user + USERHASH*(file + FILEHASH*device);
++	unsigned int n = (user%8) + USERHASH*(file + FILEHASH*device);
+ 
+ 	// June 7th, 2006
+ 	static struct rtc_time time = {
