@@ -1,0 +1,23 @@
+--- a/drivers/scsi/scsi_scan.c.orig	2023-06-11 10:04:50.018831102 +0200
++++ b/drivers/scsi/scsi_scan.c	2023-06-11 10:08:25.791685274 +0200
+@@ -1621,6 +1621,20 @@
+ {
+ 	struct scsi_device *sdev = to_scsi_device(dev);
+ 
++#ifdef CONFIG_PM_SLEEP
++	/*
++	 * The ATA subsystem may call scsi_rescan_device() before resuming has 
++	 * finished. If this happens, prevent a deadlock on the device_lock()
++	 * call by skipping rescanning.
++	 */
++	if (dev->power.is_suspended) 
++		return;
++#endif
++
++	/* 
++	 * Serialize scsi_driver.rescan() calls and scsi_driver.gendrv.remove() 
++	 * calls. 
++	 */
+ 	device_lock(dev);
+ 
+ 	scsi_attach_vpd(sdev);

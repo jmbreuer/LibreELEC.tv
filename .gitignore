@@ -40,3 +40,8 @@ tools/mkpkg/*.git
 
 # ignore old linux configs
 projects/**/*.old
+
+# local stashes
+/_orig/
+/packages/linux/patches/_away/
+/packages/linux/patches/minimal/
