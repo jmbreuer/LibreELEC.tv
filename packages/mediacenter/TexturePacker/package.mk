@@ -13,6 +13,7 @@ PKG_LONGDESC="kodi-platform:"
 PKG_CMAKE_SCRIPT="$(get_build_dir ${MEDIACENTER})/tools/depends/native/TexturePacker/src/CMakeLists.txt"
 
 PKG_CMAKE_OPTS_HOST="-Wno-dev -DKODI_SOURCE_DIR=$(get_build_dir ${MEDIACENTER})"
+#PKG_CMAKE_OPTS_HOST="-Wno-dev -DKODI_SOURCE_DIR=$(get_build_dir ${MEDIACENTER}) -DNATIVEPREFIX=${TOOLCHAIN}"
 
 pre_configure_host() {
   export CXXFLAGS="${CXXFLAGS} -std=c++17 -DTARGET_POSIX -DTARGET_LINUX -D_LINUX"
