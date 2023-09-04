@@ -1,0 +1,15 @@
+Hand-wrangled patch to allow restart from UI using Exit
+
+diff --git a/xbmc/application/Application.cpp b/xbmc/application/Application.cpp
+index bafb5de064..c5f39217cc 100644
+--- a/xbmc/application/Application.cpp
++++ b/xbmc/application/Application.cpp
+@@ -1450,6 +1450,7 @@ void CApplication::OnApplicationMessage(ThreadMessage* pMsg)
+ 
+   case TMSG_QUIT:
+     SetExitCode(EXITCODE_QUIT);
++    Stop(EXITCODE_QUIT);
+     break;
+ 
+   case TMSG_SHUTDOWN:
+-- 
