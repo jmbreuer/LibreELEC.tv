@@ -3,11 +3,12 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="kodi"
-PKG_VERSION="21.0-Omega"
-PKG_SHA256="7f54c1fd8456ac46221fbc85e447362bdc209163c6cb19fca98d106560071b7c"
+PKG_VERSION="be68a7c7953918939f3cd245343e8a501d505406"
+#PKG_VERSION="21.0-Omega"
+#PKG_SHA256="7f54c1fd8456ac46221fbc85e447362bdc209163c6cb19fca98d106560071b7c"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
-PKG_URL="https://github.com/jmbreuer/xbmc/archive/5576dab383ab21394c5f20663c0a116057c4b80e.tar.gz"
+PKG_URL="https://github.com/jmbreuer/xbmc/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain JsonSchemaBuilder:host TexturePacker:host Python3 zlib systemd lzo pcre swig:host libass curl fontconfig fribidi tinyxml tinyxml2 libjpeg-turbo freetype libcdio taglib libxml2 libxslt rapidjson sqlite ffmpeg crossguid libdvdnav libfmt lirc libfstrcmp flatbuffers:host flatbuffers libudfread spdlog"
 PKG_DEPENDS_UNPACK="commons-lang3 commons-text groovy"
 PKG_DEPENDS_HOST="toolchain"
