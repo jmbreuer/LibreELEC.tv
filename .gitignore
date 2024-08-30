@@ -45,3 +45,4 @@ projects/**/*.old
 /_orig/
 /packages/linux/patches/_away/
 /packages/linux/patches/minimal/
+.vscode/settings.json
