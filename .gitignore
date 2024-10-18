@@ -40,3 +40,10 @@ tools/mkpkg/*.git
 
 # ignore old linux configs
 projects/**/*.old
+
+# local stashes
+/_orig/
+/bughunt/
+/packages/linux/patches/_away/
+/packages/linux/patches/minimal/
+.vscode/settings.json
