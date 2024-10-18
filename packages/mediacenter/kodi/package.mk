@@ -3,11 +3,11 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="kodi"
-PKG_VERSION="0592902bb36a6c1a92c6b807e68bf700dd3be0ae"
-PKG_SHA256="3dd36109db9ebc9934aae61420e4e2e21e5e75b6c00d109103d2f8bdab5ba26b"
+PKG_VERSION="a281e89c60ffce71d49439967c812255dd61288b"
+PKG_SHA256=""
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
-PKG_URL="https://github.com/xbmc/xbmc/archive/${PKG_VERSION}.tar.gz"
+PKG_URL="https://github.com/jmbreuer/xbmc/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain JsonSchemaBuilder:host TexturePacker:host Python3 zlib systemd lzo pcre2 swig:host libass curl exiv2 fontconfig fribidi tinyxml tinyxml2 libjpeg-turbo freetype libcdio taglib libxml2 libxslt nlohmann-json sqlite ffmpeg crossguid libdvdnav libfmt lirc libfstrcmp flatbuffers:host flatbuffers libudfread spdlog libxkbcommon"
 PKG_DEPENDS_UNPACK="commons-lang3 commons-text groovy"
 PKG_DEPENDS_HOST="toolchain"
@@ -215,6 +215,13 @@ configure_package() {
     KODI_NEON=""
   fi
 
+  if [ "${VDPAU_SUPPORT}" = "yes" -a "${DISPLAYSERVER}" = "x11" ]; then
+    PKG_DEPENDS_TARGET+=" libvdpau"
+    KODI_VDPAU="-DENABLE_VDPAU=ON"
+  else
+    KODI_VDPAU="-DENABLE_VDPAU=OFF"
+  fi
+
   if [ "${VAAPI_SUPPORT}" = yes ]; then
     PKG_DEPENDS_TARGET+=" libva"
     KODI_VAAPI="-DENABLE_VAAPI=ON"
@@ -268,6 +275,7 @@ configure_package() {
                          ${PKG_KODI_LINKER} \
                          ${KODI_ARCH} \
                          ${KODI_NEON} \
+                         ${KODI_VDPAU} \
                          ${KODI_VAAPI} \
                          ${KODI_CEC} \
                          ${KODI_PLATFORM} \
