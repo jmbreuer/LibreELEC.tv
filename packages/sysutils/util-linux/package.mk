@@ -19,6 +19,7 @@ UTILLINUX_CONFIG_DEFAULT="--disable-gtk-doc \
                           --disable-rpath \
                           --enable-tls \
                           --enable-chsh-only-listed \
+                          --disable-asciidoc \
                           --disable-bash-completion \
                           --disable-colors-default \
                           --disable-pylibmount \
@@ -26,6 +27,7 @@ UTILLINUX_CONFIG_DEFAULT="--disable-gtk-doc \
                           --disable-use-tty-group \
                           --disable-makeinstall-chown \
                           --disable-makeinstall-setuid \
+                          --disable-poman \
                           --with-gnu-ld \
                           --without-selinux \
                           --without-audit \
