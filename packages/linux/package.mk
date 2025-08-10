@@ -37,8 +37,8 @@ case "${LINUX}" in
     PKG_PATCH_DIRS="default rockchip rtlwifi/6.17"
     ;;
   *)
-    PKG_VERSION="6.16.9"
-    PKG_SHA256="7ac8c8a3cf05476375deaaa85dfcee095a826ffe557b437f43774fc3b64ce58d"
+    PKG_VERSION="6.17"
+    PKG_SHA256="9b607166a1c999d8326098121222feb080a20a3253975fcdfa2de96ba7f757a7"
     PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
     PKG_PATCH_DIRS="default rtlwifi/6.17"
     case ${DEVICE} in
