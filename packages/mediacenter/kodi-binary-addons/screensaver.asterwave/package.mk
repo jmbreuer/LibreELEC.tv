@@ -20,3 +20,7 @@ PKG_ADDON_TYPE="xbmc.ui.screensaver"
 if [ "${OPENGL}" = "no" ]; then
   exit 0
 fi
+
+if [ "${DISPLAYSERVER}" = "no" ]; then
+  PKG_CMAKE_OPTS_TARGET="-DCORE_PLATFORM_NAME=gbm"
+fi
