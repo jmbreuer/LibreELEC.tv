@@ -20,27 +20,27 @@ case "${LINUX}" in
     PKG_SHA256="45daac22ef696b17041b0ef1584332a255c6f3d26bd604f7052b1f9e65bf13f0"
     PKG_URL="https://github.com/torvalds/linux/archive/${PKG_VERSION}.tar.gz"
     PKG_SOURCE_NAME="linux-${LINUX}-${PKG_VERSION}.tar.gz"
-    PKG_PATCH_DIRS="default rtlwifi/6.17"
+    PKG_PATCH_DIRS="default rtlwifi/6.18"
     ;;
   raspberrypi)
     PKG_VERSION="359f37f0faefb712add32a39f98751aea67d5c1f" # 6.12.47
     PKG_SHA256="85c882310e7c74657855b25bba700b5a856327a31547fe49f5758951984c92d9"
     PKG_URL="https://github.com/raspberrypi/linux/archive/${PKG_VERSION}.tar.gz"
     PKG_SOURCE_NAME="linux-${LINUX}-${PKG_VERSION}.tar.gz"
-    PKG_PATCH_DIRS="raspberrypi rtlwifi/6.13 rtlwifi/6.14 rtlwifi/6.15 rtlwifi/6.17"
+    PKG_PATCH_DIRS="raspberrypi rtlwifi/6.13 rtlwifi/6.14 rtlwifi/6.15 rtlwifi/6.18"
     ;;
   rockchip)
     PKG_VERSION="07e27ad16399afcd693be20211b0dfae63e0615f" # 6.17-rc7
     PKG_SHA256="098609cc94a84dd05e1054d43f9a7c335a61edb06093d4f23bcdefa7be24c1ec"
     PKG_URL="https://github.com/chewitt/linux/archive/${PKG_VERSION}.tar.gz"
     PKG_SOURCE_NAME="linux-${LINUX}-${PKG_VERSION}.tar.gz"
-    PKG_PATCH_DIRS="default rockchip rtlwifi/6.17"
+    PKG_PATCH_DIRS="default rockchip rtlwifi/6.18"
     ;;
   *)
     PKG_VERSION="6.17"
     PKG_SHA256="9b607166a1c999d8326098121222feb080a20a3253975fcdfa2de96ba7f757a7"
     PKG_URL="https://www.kernel.org/pub/linux/kernel/v${PKG_VERSION/.*/}.x/${PKG_NAME}-${PKG_VERSION}.tar.xz"
-    PKG_PATCH_DIRS="default rtlwifi/6.17"
+    PKG_PATCH_DIRS="default rtlwifi/6.18"
     case ${DEVICE} in
       RK3288|RK3328|RK3399)
         PKG_PATCH_DIRS+=" rockchip-old"
