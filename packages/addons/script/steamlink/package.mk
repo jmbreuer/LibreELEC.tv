@@ -7,7 +7,7 @@ PKG_REV="0"
 PKG_ARCH="aarch64"
 PKG_LICENSE="custom"
 PKG_SITE="https://support.steampowered.com/kb_article.php?ref=6153-IFGH-6589"
-PKG_DEPENDS_TARGET="double-conversion krb5 md4c zstd steamlink-libepoxy steamlink-libjpeg-turbo steamlink-libpng steamlink-mtdev steamlink-wayland"
+PKG_DEPENDS_TARGET="double-conversion krb5 md4c zstd steamlink-libepoxy steamlink-ffmpeg steamlink-libjpeg-turbo steamlink-libpng steamlink-mtdev steamlink-wayland"
 PKG_SECTION="script.program"
 PKG_SHORTDESC="Steam Link App for Raspberry Pi"
 PKG_LONGDESC="Installs the Steam Link App for Raspberry Pi from Valve for use in streaming from Steam clients. Addon is not associated with Valve. Use of Steam Link software is subject to the Steam Subscriber Agreement."
@@ -28,6 +28,11 @@ addon() {
 
   # double-conversion
   cp -L $(get_install_dir double-conversion)/usr/lib/libdouble-conversion.so.3 ${ADDON_BUILD}/${PKG_ADDON_ID}/system-libs/
+
+  # ffmpeg
+  cp -L $(get_install_dir steamlink-ffmpeg)/usr/lib/libavcodec.so.61 ${ADDON_BUILD}/${PKG_ADDON_ID}/system-libs/
+  cp -L $(get_install_dir steamlink-ffmpeg)/usr/lib/libavutil.so.59 ${ADDON_BUILD}/${PKG_ADDON_ID}/system-libs/
+  cp -L $(get_install_dir steamlink-ffmpeg)/usr/lib/libswresample.so.5 ${ADDON_BUILD}/${PKG_ADDON_ID}/system-libs/
 
   # krb5
   cp -L $(get_install_dir krb5)/usr/lib/libkrb5.so.3 ${ADDON_BUILD}/${PKG_ADDON_ID}/system-libs/
