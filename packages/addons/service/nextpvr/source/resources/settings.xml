@@ -54,8 +54,25 @@
             <close>false</close>
           </control>
         </setting>
+        <setting id="preset" type="string" label="30051" help="30052">
+            <level>2</level>
+            <default>copy</default>
+            <constraints>
+                <options>
+                    <option label="31000">copy</option>
+                    <option label="31001">default</option>
+                    <option label="31002">ultrafast</option>
+                    <option label="31003">superfast</option>
+                    <option label="31004">veryfast</option>
+                    <option label="31005">faster</option>
+                    <option label="31006">fast</option>
+                    <option label="31007">medium</option>
+                </options>
+            </constraints>
+            <control type="spinner" format="string"/>
+        </setting>
         <setting id="transcode" type="action" label="30009" help="30010">
-          <level>3</level>
+          <level>2</level>
           <data>RunScript(service.nextpvr, transcode)</data>
           <control type="button" format="action">
             <close>false</close>

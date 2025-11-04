@@ -7,6 +7,7 @@ import urllib.parse as urlparse
 import requests
 import json
 import subprocess
+import tarfile
 
 from  urllib.parse import parse_qs
 import xbmc, xbmcvfs, xbmcgui, xbmcaddon
@@ -23,6 +24,9 @@ LS = xbmcaddon.Addon().getLocalizedString
 SCANTABLES = ['atsc', 'dvb-c', 'dvb-s', 'dvb-t']
 GENERIC_URL = 'https://nextpvr.com/stable/linux/NPVR.zip'
 
+FFMPEG_PARMS = ( '-y [ANALYZE_DURATION] [SEEK] -i [SOURCE] -map_metadata -1 -threads [THREADS] -ignore_unknown -map 0:v:0? [PREFERRED_LANGUAGE] -map 0:a:[AUDIO_STREAM] -map -0:s '
+                '-vcodec @PRESET@ -acodec aac -ac 2 -c:s copy -hls_time [SEGMENT_DURATION] -start_number 0 -hls_list_size [SEGMENT_COUNT] -y [TARGET]')
+
 class Controller():
 
     def __init__(self):
@@ -31,34 +35,38 @@ class Controller():
     def downloadScanTable(self):
         # Taken from TVHeadend Addon
         try:
-            url = 'https://github.com/tvheadend/dtv-scan-tables/archive/tvheadend.zip'
-            archive = os.path.join(temp, 'dtv_scantables.zip')
-            temp_folder = os.path.join(temp, 'dtv-scan-tables-tvheadend')
+            url = 'https://linuxtv.org/downloads/dtv-scan-tables/dtv-scan-tables-LATEST.tar.bz2'
+            archive = os.path.join(temp, 'dtv_scantables.bz2')
+            temp_folder = os.path.join(temp, 'usr')
             dest_folder = os.path.join(xbmcvfs.translatePath(xbmcaddon.Addon().getAddonInfo('path')), 'dtv-scan-tables')
 
             xbmcgui.Dialog().notification(ADDON_NAME, LS(30042), xbmcgui.NOTIFICATION_INFO)
             urllib.request.urlretrieve(url, archive)
-            zip = zipfile.ZipFile(archive)
-            if zip.testzip() is not None: raise zipfile.BadZipfile
 
+            if tarfile.is_tarfile(archive):
+                tar = tarfile.open(archive, "r:bz2")
+            else:
+                raise tarfile.TarError
             if os.path.exists(temp_folder): shutil.rmtree(temp_folder)
             if os.path.exists(dest_folder): shutil.rmtree(dest_folder)
 
             xbmcgui.Dialog().notification(ADDON_NAME, LS(30043), xbmcgui.NOTIFICATION_INFO)
+
             for idx, folder in enumerate(SCANTABLES):
-                for z in zip.filelist:
-                    if folder in z.filename: zip.extract(z.filename, temp)
+                for conf in tar.getnames():
+                    if folder in conf:
+                        tar.extract(conf, path=temp, filter='data')
 
             for folder in SCANTABLES:
-                shutil.copytree(os.path.join(temp_folder, folder), os.path.join(dest_folder, folder))
+                shutil.copytree(os.path.join(temp_folder, 'share/dvb',folder), os.path.join(dest_folder, folder))
             if os.path.exists(temp_folder): shutil.rmtree(temp_folder)
             os.remove(archive)
             xbmcgui.Dialog().notification(ADDON_NAME, LS(30039), xbmcgui.NOTIFICATION_INFO)
         except URLError as e:
             xbmc.log('Could not download file: %s' % e.reason, xbmc.LOGERROR)
             xbmcgui.Dialog().notification(ADDON_NAME, LS(30040), xbmcgui.NOTIFICATION_ERROR)
-        except zipfile.BadZipfile:
-            xbmc.log('Could not extract files from zip, bad zipfile', xbmc.LOGERROR)
+        except TabError as e:
+            xbmc.log('Could not extract files from bz2, bad bz2 file', xbmc.LOGERROR)
             xbmcgui.Dialog().notification(ADDON_NAME, LS(30041), xbmcgui.NOTIFICATION_ERROR)
 
     def updateNextPVR(self):
@@ -75,11 +83,11 @@ class Controller():
             xbmc.log('Running: %s' % command, xbmc.LOGDEBUG)
             os.system(command)
             os.remove(archive)
-            command = 'find {0}/DeviceHost -name DeviceHostLinux -exec chmod 755 {{}} \;'.format(dest_folder)
+            command = 'find {0}/DeviceHost -name DeviceHostLinux -exec chmod 755 {{}} \\;'.format(dest_folder)
             os.system(command)
             xbmcgui.Dialog().notification(ADDON_NAME, LS(30039), xbmcgui.NOTIFICATION_INFO)
             xbmc.log('NPVR.zip installed', xbmc.LOGDEBUG)
-            if xbmcgui.Dialog().yesno("NextPVR Server", LS(30020)):
+            if xbmcgui.Dialog().yesno("NextPVR Server", LS(30030)):
                 self.id = xbmcaddon.Addon().getAddonInfo('id')
                 subprocess.call(['systemctl', 'restart', self.id])
 
@@ -182,16 +190,23 @@ class Controller():
         root = tree.getroot()
         parent = root.find("WebServer")
         child = parent.find('TranscodeHLS')
-        if child.text == 'default':
-            child.text = '-y [ANALYZE_DURATION] [SEEK] -i [SOURCE] -map_metadata -1 -threads [THREADS] -ignore_unknown -map 0:v:0? [PREFERRED_LANGUAGE] -map 0:a:[AUDIO_STREAM] -map -0:s -vcodec copy -acodec aac -ac 2 -c:s copy -hls_time [SEGMENT_DURATION] -start_number 0 -hls_list_size [SEGMENT_COUNT] -y [TARGET]'
+        preset = xbmcaddon.Addon().getSetting('preset')
+        if preset  == 'default':
+            parms = 'default'
         else:
-            child.text = 'default'
-        tree.write(base, encoding='utf-8')
+            if (preset != "copy"):
+                preset = "libx264 -preset " + preset + ' -crf 26'
+            parms = FFMPEG_PARMS.replace('@PRESET@', preset)
 
-        if child.text == 'default':
-            self.showMessage(LS(30018))
+        if child.text != parms:
+            child.text = parms
+            tree.write(base, encoding='utf-8')
+            if child.text == 'default':
+                self.showMessage(LS(30018))
+            else:
+                self.showMessage(LS(30019))
         else:
-            self.showMessage(LS(30019))
+            self.showMessage(LS(30020))
 
     def resetWebCredentials(self):
         rewrite = False
