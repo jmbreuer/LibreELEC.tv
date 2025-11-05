@@ -2,8 +2,8 @@
 # Copyright (C) 2023-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libxcrypt"
-PKG_VERSION="4.4.38"
-PKG_SHA256="80304b9c306ea799327f01d9a7549bdb28317789182631f1b54f4511b4206dd6"
+PKG_VERSION="4.5.0"
+PKG_SHA256="825e764e4ff2e6304adb814cda297074b222d54a04edbd8ebc7cf58fc3af857d"
 PKG_LICENSE="LGPL-2.1"
 PKG_SITE="https://github.com/besser82/libxcrypt"
 PKG_URL="https://github.com/besser82/libxcrypt/releases/download/v${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.xz"
