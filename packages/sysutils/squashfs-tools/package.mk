@@ -3,8 +3,8 @@
 # Copyright (C) 2017-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="squashfs-tools"
-PKG_VERSION="4.7.2"
-PKG_SHA256="4672b5c47d9418d3a5ae5b243defc6d9eae8275b9771022247c6a6082c815914"
+PKG_VERSION="4.7.3"
+PKG_SHA256="fa154acd4008cd9976dc94213e2ecfe3566dcae304480c4c04cf1c4651d5d200"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/plougher/squashfs-tools"
 PKG_URL="https://github.com/plougher/squashfs-tools/releases/download/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.gz"
