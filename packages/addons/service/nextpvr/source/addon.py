@@ -24,9 +24,6 @@ LS = xbmcaddon.Addon().getLocalizedString
 SCANTABLES = ['atsc', 'dvb-c', 'dvb-s', 'dvb-t']
 GENERIC_URL = 'https://nextpvr.com/stable/linux/NPVR.zip'
 
-FFMPEG_PARMS = ( '-y [ANALYZE_DURATION] [SEEK] -i [SOURCE] -map_metadata -1 -threads [THREADS] -ignore_unknown -map 0:v:0? [PREFERRED_LANGUAGE] -map 0:a:[AUDIO_STREAM] -map -0:s '
-                '-vcodec @PRESET@ -acodec aac -ac 2 -c:s copy -hls_time [SEGMENT_DURATION] -start_number 0 -hls_list_size [SEGMENT_COUNT] -y [TARGET]')
-
 class Controller():
 
     def __init__(self):
@@ -182,32 +179,6 @@ class Controller():
         self.doSessionRequest5('session.logout')
         self.showMessage(LS(30017))
 
-    def transcodeHLS(self):
-        base = os.path.join(xbmcvfs.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), 'config/config.xml')
-        tree = ET.parse(base)
-        parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
-        tree = ET.parse(base, parser=parser)
-        root = tree.getroot()
-        parent = root.find("WebServer")
-        child = parent.find('TranscodeHLS')
-        preset = xbmcaddon.Addon().getSetting('preset')
-        if preset  == 'default':
-            parms = 'default'
-        else:
-            if (preset != "copy"):
-                preset = "libx264 -preset " + preset + ' -crf 26'
-            parms = FFMPEG_PARMS.replace('@PRESET@', preset)
-
-        if child.text != parms:
-            child.text = parms
-            tree.write(base, encoding='utf-8')
-            if child.text == 'default':
-                self.showMessage(LS(30018))
-            else:
-                self.showMessage(LS(30019))
-        else:
-            self.showMessage(LS(30020))
-
     def resetWebCredentials(self):
         rewrite = False
         base = os.path.join(xbmcvfs.translatePath(xbmcaddon.Addon().getAddonInfo('profile')), 'config/config.xml')
@@ -227,7 +198,6 @@ class Controller():
         if rewrite:
             tree.write(base, encoding='utf-8')
             self.showMessage(LS(30046))
-
 
 if __name__ == '__main__':
     option = Controller()
