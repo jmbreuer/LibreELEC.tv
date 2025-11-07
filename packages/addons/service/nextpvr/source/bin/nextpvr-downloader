@@ -72,6 +72,9 @@ unzip ${NEXTPVR_FILE} -d ${ADDON_DIR}/nextpvr-bin >/dev/null
 if [ "$(uname -m)" != "x86_64" ] && [ $(grep -c  RPi5 /etc/os-release) -eq 0 ] && \
    [ $(grep -c  RK3588 /etc/os-release) -eq 0 ] && [ $(grep -c  S928 /proc/cpuinfo) -eq 0 ]; then
   sed -i 's/<TranscodeHLS>default<\/TranscodeHLS>/<TranscodeHLS>-y [ANALYZE_DURATION] [SEEK] -i [SOURCE] -map_metadata -1 -threads [THREADS] -ignore_unknown -map 0:v:0? [PREFERRED_LANGUAGE] -map 0:a:[AUDIO_STREAM] -map -0:s -vcodec copy -acodec aac -ac 2 -c:s copy -hls_time [SEGMENT_DURATION] -start_number 0 -hls_list_size [SEGMENT_COUNT] -y [TARGET]<\/TranscodeHLS>/' ${ADDON_DIR}/nextpvr-bin/data/Config-master-dont-edit.xml
+  sed -i 's/<default>default</<default>copy</' ${ADDON_DIR}/resources/settings.xml
+else:
+  sed -i 's/<level type="ffmpeg">3</<level type="ffmpeg">2</' ${ADDON_DIR}/resources/settings.xml
 fi
 
 sed -i 's/<RecordingDirectory>C:\\Users\\Public\\Videos\\<\/RecordingDirectory>/<RecordingDirectory>\/storage\/tvshows\/<\/RecordingDirectory>/' ${ADDON_DIR}/nextpvr-bin/data/Config-master-dont-edit.xml
