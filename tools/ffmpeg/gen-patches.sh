@@ -28,7 +28,11 @@ create_patch() {
   PATCH_CREATE_DIFF="no"
 
   case "${FEATURE_SET}" in
-    v4l2-drmprime | v4l2-request | vf-deinterlace-v4l2m2m)
+    v4l2-request)
+      REPO="https://code.ffmpeg.org/Kwiboo/FFmpeg.git"
+      REFSPEC="${FEATURE_SET}-n${FFMPEG_VERSION}"
+      ;;
+    v4l2-drmprime | vf-deinterlace-v4l2m2m)
       REPO="https://github.com/jernejsk/FFmpeg"
       REFSPEC="${FEATURE_SET}-n${FFMPEG_VERSION}"
       ;;
