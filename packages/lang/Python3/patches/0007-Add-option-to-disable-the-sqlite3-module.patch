@@ -24,9 +24,9 @@ index 5fad7f82fb..7b6c9811a6 100644
  		re \
  		site-packages \
 -		sqlite3 \
+ 		string \
  		sysconfig \
  		tkinter \
- 		tomllib \
 @@ -2506,6 +2505,10 @@ ifeq (@IDLE@,yes)
  LIBSUBDIRS += idlelib idlelib/Icons
  endif
