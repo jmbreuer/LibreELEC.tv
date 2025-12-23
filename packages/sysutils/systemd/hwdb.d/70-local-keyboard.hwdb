@@ -110,8 +110,12 @@ evdev:input:b0005v0508p1980*
 evdev:input:b0003v4842p0001*
  KEYBOARD_KEY_c0041=enter
 
-# xaomi remote
+# xiaomi remote
 evdev:input:b0005v2717p32B9e4A4C*
+ KEYBOARD_KEY_c0041=enter
+
+# xiaomi remote 
+evdev:input:b0005v2717p32B9e4A53* 
  KEYBOARD_KEY_c0041=enter
 
 # yyykq remote
