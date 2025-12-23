@@ -19,6 +19,7 @@ PKG_MOBY_BUILDTAGS="daemon \
                     exclude_graphdriver_devicemapper \
                     exclude_graphdriver_aufs \
                     exclude_graphdriver_btrfs \
+                    exclude_graphdriver_zfs \
                     journald"
 
 configure_target() {
