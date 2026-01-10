@@ -12,7 +12,7 @@ PKG_LONGDESC="The Docker CLI"
 PKG_TOOLCHAIN="manual"
 
 # Git commit of the matching tag https://github.com/docker/cli/tags
-export PKG_GIT_COMMIT="f52814d454173982e6692dd7e290a41b828d9cbc"
+export PKG_GIT_COMMIT="0e6fee6c52f761dc79dc4bf712ea9fe4095c9bd2"
 
 configure_target() {
   go_configure
