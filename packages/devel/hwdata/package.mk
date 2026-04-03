@@ -10,8 +10,10 @@ PKG_URL="https://github.com/vcrhonek/hwdata/archive/refs/tags/v${PKG_VERSION}.ta
 PKG_DEPENDS_HOST="toolchain:host"
 PKG_LONGDESC="hwdata contains various hardware identification and configuration data, such as the pci.ids and usb.ids databases"
 
-pre_configure_host() {
+configure_host() {
   # hwdata fails to build in subdirs
   cd ${PKG_BUILD}
     rm -rf .${TARGET_NAME}
+
+  ./configure --prefix=${TOOLCHAIN} --libexecdir=${TOOLCHAIN}/lib
 }
