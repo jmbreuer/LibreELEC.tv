@@ -27,6 +27,7 @@ PKG_CONFIGURE_OPTS_HOST="${PKG_CONFIGURE_OPTS_COMMON} \
                          --without-emacs"
 
 PKG_CONFIGURE_OPTS_TARGET="${PKG_CONFIGURE_OPTS_COMMON} \
+                           --with-included-libxml \
                            --with-sysroot=yes"
 
 post_configure_target() {
