@@ -1,7 +1,11 @@
-# OpenGL(X) implementation to use (mesa / no)
+################################################################################
+# setup device defaults
+################################################################################
+
+# OpenGL implementation to use (no / mesa)
   OPENGL="no"
 
-# OpenGL-ES implementation to use (mesa / no)
+# OpenGL ES implementation to use (no / mesa)
   OPENGLES="mesa"
 
 # Vulkan implementation to use (vulkan-loader / no)
@@ -13,13 +17,13 @@
 # Windowmanager to use (fluxbox / sway / weston / no)
   WINDOWMANAGER="sway"
 
-# KODI Player implementation to use (mesa / default)
+# KODI Player implementation to use (default / mesa)
   KODIPLAYER_DRIVER="mesa"
 
 # set the addon project
   ADDON_PROJECT="Generic"
 
-# Mesa 3D Graphic / NVIDIA drivers to use (all / crocus,i915,iris,nvidia-ng,r300,r600,radeonsi,vmware,virtio)
+# Graphic drivers to use (all / crocus,i915,iris,nvidia-ng,r300,r600,radeonsi,vmware,virtio)
 # Space separated list is supported,
 # e.g. GRAPHIC_DRIVERS="crocus i915 iris r300 r600 radeonsi vmware virtio"
   GRAPHIC_DRIVERS="crocus i915 iris nvidia-ng r300 r600 radeonsi vmware virtio"
